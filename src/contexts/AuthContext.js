@@ -1,6 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import axios from 'axios';
-import { API_BASE_URL, API_BASE_PATH } from '../config';
 
 const AuthContext = createContext();
 
@@ -12,23 +11,10 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // Set base URL for API calls
   useEffect(() => {
-    console.log('🔍 Config - API_BASE_URL:', API_BASE_URL);
-    axios.defaults.baseURL = API_BASE_URL + API_BASE_PATH;
-    
-    // Test connection immediately
-    testConnection();
+    axios.defaults.baseURL = 'http://localhost:5000/api';
   }, []);
-
-  const testConnection = async () => {
-    try {
-      const response = await axios.get('/products');
-      console.log('✅ Backend connection successful:', response.data);
-    } catch (error) {
-      console.error('❌ Backend connection failed:', error);
-      console.log('💡 Error details:', error.response?.data);
-    }
-  };
 
   useEffect(() => {
     const token = localStorage.getItem('token');
