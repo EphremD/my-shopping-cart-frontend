@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import axios from 'axios';
+import { API_BASE_URL, API_BASE_PATH } from '../config';
 
 const AuthContext = createContext();
 
@@ -11,22 +12,23 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // HARDCODE the production API URL since environment variable isn't working
-  const API_BASE_URL = 'https://my-shopping-cart-backend-production.up.railway.app';
-  
   useEffect(() => {
-    console.log('🔍 Using API URL:', API_BASE_URL);
-    axios.defaults.baseURL = API_BASE_URL + '/api';
+    console.log('🔍 Config - API_BASE_URL:', API_BASE_URL);
+    axios.defaults.baseURL = API_BASE_URL + API_BASE_PATH;
     
-    // Test the connection
-    axios.get('/products')
-      .then(response => {
-        console.log('✅ Backend connection successful');
-      })
-      .catch(error => {
-        console.error('❌ Backend connection failed:', error.message);
-      });
+    // Test connection immediately
+    testConnection();
   }, []);
+
+  const testConnection = async () => {
+    try {
+      const response = await axios.get('/products');
+      console.log('✅ Backend connection successful:', response.data);
+    } catch (error) {
+      console.error('❌ Backend connection failed:', error);
+      console.log('💡 Error details:', error.response?.data);
+    }
+  };
 
   useEffect(() => {
     const token = localStorage.getItem('token');
