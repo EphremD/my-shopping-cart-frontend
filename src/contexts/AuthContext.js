@@ -11,9 +11,21 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Set base URL for API calls
+  // HARDCODE the production API URL since environment variable isn't working
+  const API_BASE_URL = 'https://my-shopping-cart-backend-production.up.railway.app';
+  
   useEffect(() => {
-    axios.defaults.baseURL = 'http://localhost:5000/api';
+    console.log('🔍 Using API URL:', API_BASE_URL);
+    axios.defaults.baseURL = API_BASE_URL + '/api';
+    
+    // Test the connection
+    axios.get('/products')
+      .then(response => {
+        console.log('✅ Backend connection successful');
+      })
+      .catch(error => {
+        console.error('❌ Backend connection failed:', error.message);
+      });
   }, []);
 
   useEffect(() => {
