@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }) => {
     console.log('🚀 Using Production API URL:', PRODUCTION_API_URL);
     
     // Set the base URL for ALL axios requests
-    axios.defaults.baseURL = PRODUCTION_API_URL + '/api';
+    axios.defaults.baseURL = PRODUCTION_API_URL;
     
     // Test the connection immediately
     axios.get('/products')
